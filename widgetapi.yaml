@@ -1,8 +1,9 @@
 asyncapi: 2.5.0
 info:
   title: Verona Inferfaces Specification "Widget"
-  version: '0.1.0'
-  description: This is one part of the [Verona Online Assessment Standards](https://verona-interfaces.github.io).
+  version: '0.2.0'
+  description: |
+    This is one part of the [Verona Online Assessment Standards](https://verona-interfaces.github.io).
     All messages are sent via the postMessage function of the html page. The widget takes the page root of its parent
     as target (parent.window), and the application binds the function call to the iframe element of the widget.
 
@@ -32,7 +33,10 @@ channels:
           properties:
             metadata:
               type: string
-              description: Via this property, the widget sends the stringified metadata object definied as json-ld in the header of the html file. See [here](https://verona-interfaces.github.io/intro/metadata.html) for more information.
+              description: |
+                Via this property, the widget sends the stringified metadata object definied as json-ld in
+                the header of the html file. See [here](https://verona-interfaces.github.io/intro/metadata.html)
+                for more information.
           required:
             - metadata
           additionalProperties: false
@@ -69,6 +73,7 @@ channels:
     subscribe:
       operationId: vowStateChangedNotification
       summary: State Changed Notification
+      description: The widget sends state data.
       message:
         name: vowStateChangedNotification
         contentType: application/json
@@ -88,6 +93,34 @@ channels:
             state:
               type: string
               format: byte
+          required:
+            - sessionId
+            - timeStamp
+          additionalProperties: false
+
+  vowReturnRequested:
+    subscribe:
+      operationId: vowReturnRequested
+      summary: Close Requested
+      description: The widget calls for closing the widget dialog.
+      message:
+        name: vowReturnRequested
+        contentType: application/json
+        payload:
+          type: object
+          properties:
+            sessionId:
+              $ref: "#/components/schemas/SessionIdString"
+            timeStamp:
+              type: string
+              format: date-time
+              description: Ensures, that later arriving states are ignored.
+            saveState:
+              type: boolean
+              description: |
+                If true, the host is requested to send the final state to the player.
+                If false, no vopWidgetReturn message will be sent to the player.
+              default: true
           required:
             - sessionId
             - timeStamp
