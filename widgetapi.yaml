@@ -1,7 +1,7 @@
 asyncapi: 2.5.0
 info:
   title: Verona Inferfaces Specification "Widget"
-  version: '0.2.0'
+  version: '1.0.0'
   description: |
     This is one part of the [Verona Online Assessment Standards](https://verona-interfaces.github.io).
     All messages are sent via the postMessage function of the html page. The widget takes the page root of its parent
@@ -115,6 +115,13 @@ channels:
               type: string
               format: date-time
               description: Ensures, that later arriving states are ignored.
+            sharedParameters:
+              type: array
+              items:
+                $ref: "#/components/schemas/SharedParameter"
+            state:
+              type: string
+              format: byte
             saveState:
               type: boolean
               description: |
