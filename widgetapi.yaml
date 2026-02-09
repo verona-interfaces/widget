@@ -54,10 +54,10 @@ channels:
           properties:
             sessionId:
               $ref: "#/components/schemas/SessionIdString"
-            parameters:
+            widgetConfig:
               type: array
               items:
-                $ref: "#/components/schemas/Parameter"
+                $ref: "#/components/schemas/WidgetConfig"
             sharedParameters:
               type: array
               items:
@@ -154,13 +154,14 @@ components:
           type: string
       required:
         - key
+        - value
       example:
         {
           "key": "CODE_MODE",
           "value": "INSTRUCTIONS_ONLY"
         }
 
-    Parameter:
+    WidgetConfig:
       type: object
       properties:
         key:
@@ -169,4 +170,5 @@ components:
           type: string
       required:
         - key
+        - value
       additionalProperties: false
