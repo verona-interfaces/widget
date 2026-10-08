@@ -1,7 +1,7 @@
 asyncapi: 2.5.0
 info:
   title: Verona Inferfaces Specification "Widget"
-  version: '1.0.0'
+  version: '1.0.1'
   description: |
     This is one part of the [Verona Online Assessment Standards](https://verona-interfaces.github.io).
     All messages are sent via the postMessage function of the html page. The widget takes the page root of its parent
@@ -54,14 +54,17 @@ channels:
           properties:
             sessionId:
               $ref: "#/components/schemas/SessionIdString"
-            widgetConfig:
+            parameters:
               type: array
+              description: This object structure is used to modify the behavior and/or design of the widget at its start.
               items:
-                $ref: "#/components/schemas/WidgetConfig"
+                $ref: "#/components/schemas/Parameter"
             sharedParameters:
               type: array
+              description: This object structure is used to share data between instances of the module. The host may collect all shared data 
+                sent by modules and provide it to every module.
               items:
-                $ref: "#/components/schemas/SharedParameter"
+                $ref: "#/components/schemas/Parameter"
             state:
               type: string
               format: byte
@@ -88,8 +91,10 @@ channels:
               description: Ensures, that later arriving states are ignored.
             sharedParameters:
               type: array
+              description: This object structure is used to share data between instances of the module. The host may collect all shared data 
+                sent by modules and provide it to every module.
               items:
-                $ref: "#/components/schemas/SharedParameter"
+                $ref: "#/components/schemas/Parameter"
             state:
               type: string
               format: byte
@@ -140,13 +145,11 @@ components:
       type: string
       example: 'idk8ur5jf9ru5jk'
 
-    SharedParameter:
+    Parameter:
       type: object
-      description: This object structure is used to share data between instances of the module. The host may collect all shared data 
-        sent by modules and provide it to every module.
       properties:
         key:
-          description: Identifier to find or set the shared parameter.
+          description: Identifier to find or set the parameter.
           type: string
           minLength: 2
         value:
@@ -160,15 +163,3 @@ components:
           "key": "CODE_MODE",
           "value": "INSTRUCTIONS_ONLY"
         }
-
-    WidgetConfig:
-      type: object
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      required:
-        - key
-        - value
-      additionalProperties: false
